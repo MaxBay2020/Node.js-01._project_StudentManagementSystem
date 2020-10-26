@@ -1,0 +1,75 @@
+<div class="container-fluid">
+    <div class="row">
+        <br><br>
+        <div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-2 main">
+            <h1 class="page-header">Student Management System</h1>
+            <h2 class="sub-header">All students</h2>
+            <a href="/student/add" class="btn btn-success">Add student</a>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Student number</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Operation</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for (var i = 0; i < data.length; i++) { %>
+                        <tr>
+                            <td><%= data[i].sId %></td>
+                            <td><%= data[i].sName %></td>
+                            <td><%= data[i].sAge %></td>
+                            <% if(data[i].sGender === 'm') { %>
+                                <td>Male</td>
+                            <% } else { %>
+                                <td>Female</td>
+                            <% } %>
+                            <td><a href="/student/<%= data[i].sId %>" class="btn btn-primary btn-sm">Update</a></td>
+                            <td><a sId="<%= data[i].sId %>" myAttr="/student/<%= data[i].sId %>" class="btn btn-danger btn-sm delBtn">Delete</a></td>
+                        </tr>
+                    <% }%>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/public/js/jquery.min.js"></script>
+<script>
+    window.onload = () => {
+        //delete function
+        $.each($('.delBtn'), (index, value) => {
+            $(value).click(() => {
+                if(confirm('Are you sure?')){
+                    let sId = $(value).attr('sId')
+                    let url = $(value).attr('myAttr')
+
+                    $.ajax({
+                        url: url,
+                        type: 'delete',
+                        success: (data) => {
+                            if(data==='1'){
+                                alert('delete successfully')
+                                window.location = '/'
+                            }else if(data==='-1'){
+                                alert('no such student')
+                                window.location = '/'
+                            }else if(data==='-2'){
+                                alert('server error')
+                                window.location = '/'
+                            }
+                        }
+                    })
+                }
+            })
+        })
+
+
+    }
+</script>
+

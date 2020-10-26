@@ -1,0 +1,72 @@
+<div class="container-fluid">
+    <div class="row">
+        <br><br>
+        <div class="col-sm-9 col-sm-offset-3 col-md-8 col-md-offset-2 main">
+            <h1 class="page-header">Student Management System</h1>
+            <h3 class="sub-header">Update student</h3>
+            <br>
+            <div class="table-responsive col-md-6">
+                    <div class="form-group">
+                        <label for="sId">Student Number: </label>
+                        <input disabled value="<%= student.sId %>" type="text" class="form-control" id="sId" placeholder="student number" name="studentNumber">
+                    </div>
+
+                    <div class="alert alert-success" id="successTip" role="alert" hidden>Student number is good!</div>
+                    <div class="alert alert-danger" role="alert" id="errTip" hidden>Student number exists</div>
+
+                    <div class="form-group">
+                        <label for="sName">Name: </label>
+                        <input value="<%= student.sName %>" id="sName" type="text" class="form-control" placeholder="name" name="name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sAge">Age: </label>
+                        <input value="<%= student.sAge %>" type="number" class="form-control" id="sAge" name="age" placeholder="age">
+                    </div>
+
+                    <label>Gender: </label>
+
+
+                    <label class="radio-inline">
+                        <input type="radio" name="sGender" id="male" value="m" <% if(student.sGender === 'm'){ %>
+                               checked="checked"
+                        <% } %>> Male
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="sGender" id="female" value="f"<% if(student.sGender === 'f'){ %>
+                               checked="checked"
+                               <% } %>> Female
+                    </label>
+                <br><br>
+                <button type="submit" class="btn btn-default" id="btn">Update</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/public/js/jquery.min.js"></script>
+<script>
+    //click to add student
+    $('#btn').click(() => {
+        let sId = $('#sId').val()
+        let sName = $('#sName').val()
+        let sAge = $('#sAge').val()
+        let sGender = $('input[name=sGender]:checked').val()
+
+        //submit data
+        $.post('/student/'+sId, {
+            sName:sName,
+            sAge:sAge,
+            sGender:sGender
+        }, (data) => {
+            if(data==='1'){
+                alert('Update successfully')
+                window.location = '/'
+            }else if(data === '-2'){
+                $('#errTip').html('Server error, please contact admin').attr('hidden', null)
+            }
+        })
+    })
+</script>
+
